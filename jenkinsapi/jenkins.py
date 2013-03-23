@@ -72,7 +72,7 @@ class Jenkins(JenkinsBase):
         return auth_args
 
     def get_base_server_url(self):
-        return self.baseurl[:-(len(config.JENKINS_API))] 
+        return self.baseurl[:-(len(config.JENKINS_API))]
 
     def get_opener(self):
         if self.formauth:
@@ -119,7 +119,7 @@ class Jenkins(JenkinsBase):
         '''Try and reload the configuration from disk'''
         try:
             self.hit_url("%(baseurl)s/reload" % self.__dict__)
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             if e.code == 403:
                 raise NotAuthorized("You are not authorized to reload this server")
             raise
@@ -290,12 +290,12 @@ class Jenkins(JenkinsBase):
         fn_urlopen = self.get_jenkins_obj().get_opener()
         try:
             r = fn_urlopen(viewExistsCheck_url).read()
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             log.debug("Error reading %s" % viewExistsCheck_url)
             log.exception(e)
             raise
         """<div/>"""
-        if len(r) > 7: 
+        if len(r) > 7:
             return 'A view already exists with the name "%s"' % (str_view_name)
         else:
             data = {"mode":"hudson.model.ListView", "Submit": "OK"}
@@ -305,7 +305,7 @@ class Jenkins(JenkinsBase):
             try:
                 createView_url = urlparse.urljoin(url, "createView")
                 result = self.post_data(createView_url, params)
-            except urllib2.HTTPError, e:
+            except urllib2.HTTPError as e:
                 log.debug("Error post_data %s" % createView_url)
                 log.exception(e)
             return urlparse.urljoin(url, "view/%s/" % str_view_name)
@@ -369,7 +369,7 @@ class Jenkins(JenkinsBase):
         fn_urlopen = self.get_jenkins_obj().get_opener()
         try:
             fn_urlopen(url).read()
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             log.debug("Error reading %s" % url)
             log.exception(e)
             raise
@@ -415,7 +415,7 @@ class Jenkins(JenkinsBase):
         fn_urlopen = self.get_jenkins_obj().get_opener()
         try:
             fn_urlopen(url).read()
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             log.debug("Error reading %s" % url)
             log.exception(e)
             raise

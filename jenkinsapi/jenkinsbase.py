@@ -33,7 +33,7 @@ class JenkinsBase(object):
         if poll and not self.formauth:
             try:
                 self.poll()
-            except urllib2.HTTPError, hte:
+            except urllib2.HTTPError as hte:
                 log.exception(hte)
                 log.warn( "Failed to connect to %s" % baseurl )
                 raise
@@ -68,7 +68,7 @@ class JenkinsBase(object):
         try:
             stream = fn_urlopen(url)
             result = eval(stream.read())
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             if e.code == 404:
                 raise
             log.warn("Error reading %s" % url)
@@ -80,7 +80,7 @@ class JenkinsBase(object):
         try:
             urlopen = self.get_jenkins_obj().get_opener()
             result = urlopen(url, data=content).read().strip()
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             log.warn("Error post data %s" % url)
             log.exception(e)
             raise
@@ -91,7 +91,7 @@ class JenkinsBase(object):
         try:
             stream = fn_urlopen( url )
             html_result = stream.read()
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             log.debug( "Error reading %s" % url )
             log.exception(e)
             raise
